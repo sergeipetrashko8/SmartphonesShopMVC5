@@ -33,6 +33,15 @@ namespace GameStore.WebUI.Infrastructure
         private void AddBindings()
         {
             _kernel.Bind<ISmartphoneRepository>().To<EfSmartphoneRepository>();
+
+            EmailSettings emailSettings = new EmailSettings
+            {
+                WriteAsFile = bool.Parse(ConfigurationManager
+                                             .AppSettings["Email.WriteAsFile"] ?? "false")
+            };
+
+            _kernel.Bind<IOrderProcessor>().To<EmailOrderProcessor>()
+                .WithConstructorArgument("settings", emailSettings);
         }
     }
 }
