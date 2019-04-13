@@ -9,18 +9,18 @@ namespace SmartphoneStore.WebUI.Controllers
 {
     public class NavController : Controller
     {
-        private ISmartphoneRepository repository;
+        private ISmartphoneRepository _repository;
 
         public NavController(ISmartphoneRepository repo)
         {
-            repository = repo;
+            _repository = repo;
         }
 
         public PartialViewResult Menu(string manufacturer = null)
         {
             ViewBag.SelectedManufacturer = manufacturer;
             
-            IEnumerable<string> manufacturers = repository.Smartphones
+            IEnumerable<string> manufacturers = _repository.Smartphones
                 .Select(smartphone => smartphone.Manufacturer)
                 .Distinct()
                 .OrderBy(x => x);

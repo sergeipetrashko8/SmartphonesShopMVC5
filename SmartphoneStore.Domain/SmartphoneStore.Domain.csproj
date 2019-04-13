@@ -72,6 +72,7 @@
     <Compile Include="Abstract\ISmartphoneRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFSmartphoneRepository.cs" />
+    <Compile Include="Entities\Cart.cs" />
     <Compile Include="Entities\Smartphone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
