@@ -69,10 +69,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IOrderProcessor.cs" />
     <Compile Include="Abstract\ISmartphoneRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFSmartphoneRepository.cs" />
+    <Compile Include="Concrete\EmailOrderProcessor.cs" />
     <Compile Include="Entities\Cart.cs" />
+    <Compile Include="Entities\ShippingDetails.cs" />
     <Compile Include="Entities\Smartphone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
