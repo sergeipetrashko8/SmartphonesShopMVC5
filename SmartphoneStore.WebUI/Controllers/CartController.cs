@@ -15,48 +15,42 @@ namespace SmartphoneStore.WebUI.Controllers
             repository = repo;
         }
 
-        public RedirectToRouteResult AddToCart(int smartphoneId, string returnUrl)
+        public PartialViewResult Summary(Cart cart)
         {
-            Smartphone smartphone = repository.Smartphones
-                .FirstOrDefault(g => g.SmartphoneId == smartphoneId);
-
-            if (smartphone != null)
-            {
-                GetCart().AddItem(smartphone, 1);
-            }
-            return RedirectToAction("Index", new { returnUrl });
+            return PartialView(cart);
         }
-
-        public RedirectToRouteResult RemoveFromCart(int smartphoneId, string returnUrl)
-        {
-            Smartphone smartphone = repository.Smartphones
-                .FirstOrDefault(g => g.SmartphoneId == smartphoneId);
-
-            if (smartphone != null)
-            {
-                GetCart().RemoveLine(smartphone);
-            }
-            return RedirectToAction("Index", new { returnUrl });
-        }
-
-        public Cart GetCart()
-        {
-            Cart cart = (Cart)Session["Cart"];
-            if (cart == null)
-            {
-                cart = new Cart();
-                Session["Cart"] = cart;
-            }
-            return cart;
-        }
-
-        public ViewResult Index(string returnUrl)
+    
+        public ViewResult Index(Cart cart, string returnUrl)
         {
             return View(new CartIndexViewModel
             {
-                Cart = GetCart(),
+                Cart = cart,
                 ReturnUrl = returnUrl
             });
+        }
+
+        public RedirectToRouteResult AddToCart(Cart cart, int smartphoneId, string returnUrl)
+        {
+            Smartphone smartphone = repository.Smartphones
+                .FirstOrDefault(g => g.SmartphoneId == smartphoneId);
+
+            if (smartphone != null)
+            {
+                cart.AddItem(smartphone, 1);
+            }
+            return RedirectToAction("Index", new { returnUrl });
+        }
+
+        public RedirectToRouteResult RemoveFromCart(Cart cart, int smartphoneId, string returnUrl)
+        {
+            Smartphone smartphone = repository.Smartphones
+                .FirstOrDefault(g => g.SmartphoneId == smartphoneId);
+
+            if (smartphone != null)
+            {
+                cart.RemoveLine(smartphone);
+            }
+            return RedirectToAction("Index", new { returnUrl });
         }
     }
 }
