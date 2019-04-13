@@ -4,10 +4,10 @@ using SmartphoneStore.Domain.Entities;
 
 namespace SmartphoneStore.Domain.Concrete
 {
-    public class EFSmartphoneRepository : ISmartphoneRepository
+    public class EfSmartphoneRepository : ISmartphoneRepository
     {
-        private readonly EFDbContext context = new EFDbContext();
+        private readonly EfDbContext _context = new EfDbContext();
 
-        public IEnumerable<Smartphone> Smartphones => context.Smartphones;
+        public IEnumerable<Smartphone> Smartphones => _context.Smartphones;
     }
 }

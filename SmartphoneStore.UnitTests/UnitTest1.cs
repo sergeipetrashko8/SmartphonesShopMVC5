@@ -30,7 +30,7 @@ namespace SmartphoneStore.UnitTests
             });
             SmartphoneController controller = new SmartphoneController(mock.Object)
             {
-                pageSize = 3
+                PageSize = 3
             };
 
             // Действие (act)
@@ -85,7 +85,7 @@ namespace SmartphoneStore.UnitTests
                 new Smartphone { SmartphoneId = 5, Name = "Смартфон5"}
             });
             SmartphoneController controller = new SmartphoneController(mock.Object);
-            controller.pageSize = 3;
+            controller.PageSize = 3;
 
             // Act
             SmartphonesListViewModel result
@@ -113,7 +113,7 @@ namespace SmartphoneStore.UnitTests
                 new Smartphone { SmartphoneId = 5, Name = "Смартфон5", Manufacturer="Man3"}
             });
             SmartphoneController controller = new SmartphoneController(mock.Object);
-            controller.pageSize = 3;
+            controller.PageSize = 3;
 
             // Action
             List<Smartphone> result = ((SmartphonesListViewModel)controller.List("Man2", 1).Model)
@@ -188,7 +188,7 @@ namespace SmartphoneStore.UnitTests
             });
             SmartphoneController controller = new SmartphoneController(mock.Object)
             {
-                pageSize = 3
+                PageSize = 3
             };
 
             // Действие - тестирование счетчиков товаров для различных категорий
