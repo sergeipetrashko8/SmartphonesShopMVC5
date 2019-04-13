@@ -1,7 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using SmartphoneStore.Domain.Abstract;
 using SmartphoneStore.Domain.Entities;
+using SmartphoneStore.WebUI.Controllers;
+using SmartphoneStore.WebUI.Models;
 
 namespace SmartphoneStore.UnitTests
 {
@@ -100,8 +105,8 @@ namespace SmartphoneStore.UnitTests
         public void Can_Clear_Contents()
         {
             // Организация - создание нескольких тестовых игр
-            Smartphone smartphone1 = new Smartphone { SmartphoneId = 1, Name = "Игра1", Price = 100 };
-            Smartphone smartphone2 = new Smartphone { SmartphoneId = 2, Name = "Игра2", Price = 55 };
+            Smartphone smartphone1 = new Smartphone { SmartphoneId = 1, Name = "Смартфон1", Price = 100 };
+            Smartphone smartphone2 = new Smartphone { SmartphoneId = 2, Name = "Смартфон2", Price = 55 };
 
             // Организация - создание корзины
             Cart cart = new Cart();
@@ -114,6 +119,79 @@ namespace SmartphoneStore.UnitTests
 
             // Утверждение
             Assert.AreEqual(cart.Lines.Count(), 0);
+        }
+
+        /// <summary>
+        /// Проверяем добавление в корзину
+        /// </summary>
+        [TestMethod]
+        public void Can_Add_To_Cart()
+        {
+            // Организация - создание имитированного хранилища
+            Mock<ISmartphoneRepository> mock = new Mock<ISmartphoneRepository>();
+            mock.Setup(m => m.Smartphones).Returns(new List<Smartphone>
+            {
+                new Smartphone {SmartphoneId = 1, Name = "Смартфон1", Manufacturer = "Производитель1"},
+            }.AsQueryable());
+
+            // Организация - создание корзины
+            Cart cart = new Cart();
+
+            // Организация - создание контроллера
+            CartController controller = new CartController(mock.Object);
+
+            // Действие - добавить игру в корзину
+            controller.AddToCart(cart, 1, null);
+
+            // Утверждение
+            Assert.AreEqual(cart.Lines.Count(), 1);
+            Assert.AreEqual(cart.Lines.ToList()[0].Smartphone.SmartphoneId, 1);
+        }
+
+        /// <summary>
+        /// После добавления игры в корзину, должно быть перенаправление на страницу корзины
+        /// </summary>
+        [TestMethod]
+        public void Adding_Smartphone_To_Cart_Goes_To_Cart_Screen()
+        {
+            // Организация - создание имитированного хранилища
+            Mock<ISmartphoneRepository> mock = new Mock<ISmartphoneRepository>();
+            mock.Setup(m => m.Smartphones).Returns(new List<Smartphone>
+            {
+                new Smartphone {SmartphoneId = 1, Name = "Смартфон1", Manufacturer = "Производитель1"},
+            }.AsQueryable());
+
+            // Организация - создание корзины
+            Cart cart = new Cart();
+
+            // Организация - создание контроллера
+            CartController controller = new CartController(mock.Object);
+
+            // Действие - добавить игру в корзину
+            RedirectToRouteResult result = controller.AddToCart(cart, 2, "myUrl");
+
+            // Утверждение
+            Assert.AreEqual(result.RouteValues["action"], "Index");
+            Assert.AreEqual(result.RouteValues["returnUrl"], "myUrl");
+        }
+
+        // Проверяем URL
+        [TestMethod]
+        public void Can_View_Cart_Contents()
+        {
+            // Организация - создание корзины
+            Cart cart = new Cart();
+
+            // Организация - создание контроллера
+            CartController target = new CartController(null);
+
+            // Действие - вызов метода действия Index()
+            CartIndexViewModel result
+                = (CartIndexViewModel)target.Index(cart, "myUrl").ViewData.Model;
+
+            // Утверждение
+            Assert.AreSame(result.Cart, cart);
+            Assert.AreEqual(result.ReturnUrl, "myUrl");
         }
     }
 }
