@@ -6,5 +6,7 @@ namespace SmartphoneStore.Domain.Abstract
     public interface ISmartphoneRepository
     {
         IEnumerable<Smartphone> Smartphones { get; }
+
+        void SaveSmartphone(Smartphone smartphone);
     }
 }
