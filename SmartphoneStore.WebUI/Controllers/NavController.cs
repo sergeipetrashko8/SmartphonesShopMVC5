@@ -9,14 +9,14 @@ namespace SmartphoneStore.WebUI.Controllers
 {
     public class NavController : Controller
     {
-        private ISmartphoneRepository _repository;
+        private readonly ISmartphoneRepository _repository;
 
         public NavController(ISmartphoneRepository repo)
         {
             _repository = repo;
         }
 
-        public PartialViewResult Menu(string manufacturer = null)
+        public PartialViewResult Menu(string manufacturer = null, bool horizontalNav = false)
         {
             ViewBag.SelectedManufacturer = manufacturer;
             
@@ -24,7 +24,8 @@ namespace SmartphoneStore.WebUI.Controllers
                 .Select(smartphone => smartphone.Manufacturer)
                 .Distinct()
                 .OrderBy(x => x);
-            return PartialView(manufacturers);
+
+            return PartialView("FlexMenu", manufacturers);
         }
     }
 }
