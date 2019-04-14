@@ -9,5 +9,24 @@ namespace SmartphoneStore.Domain.Concrete
         private readonly EfDbContext _context = new EfDbContext();
 
         public IEnumerable<Smartphone> Smartphones => _context.Smartphones;
+
+        public void SaveSmartphone(Smartphone smartphone)
+        {
+            if (smartphone.SmartphoneId == 0)
+                _context.Smartphones.Add(smartphone);
+            else
+            {
+                Smartphone dbEntry = _context.Smartphones.Find(smartphone.SmartphoneId);
+
+                if (dbEntry != null)
+                {
+                    dbEntry.Name = smartphone.Name;
+                    dbEntry.Description = smartphone.Description;
+                    dbEntry.Price = smartphone.Price;
+                    dbEntry.Manufacturer = smartphone.Manufacturer;
+                }
+            }
+            _context.SaveChanges();
+        }
     }
 }
