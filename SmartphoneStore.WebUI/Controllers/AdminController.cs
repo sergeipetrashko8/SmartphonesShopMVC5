@@ -5,6 +5,7 @@ using SmartphoneStore.Domain.Entities;
 
 namespace SmartphoneStore.WebUI.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly ISmartphoneRepository repository;
