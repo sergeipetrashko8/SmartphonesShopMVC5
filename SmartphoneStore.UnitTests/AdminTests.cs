@@ -137,5 +137,33 @@ namespace SmartphoneStore.UnitTests
             // Утверждение - проверка типа результата метода
             Assert.IsInstanceOfType(result, typeof(ViewResult));
         }
+
+        [TestMethod]
+        public void Can_Delete_Valid_Smartphones()
+        {
+            // Организация - создание объекта Smartphone
+            Smartphone smartphone = new Smartphone { SmartphoneId = 2, Name = "Смартфон2" };
+
+            // Организация - создание имитированного хранилища данных
+            Mock<ISmartphoneRepository> mock = new Mock<ISmartphoneRepository>();
+            mock.Setup(m => m.Smartphones).Returns(new List<Smartphone>
+            {
+                new Smartphone { SmartphoneId = 1, Name = "Смартфон1"},
+                new Smartphone { SmartphoneId = 2, Name = "Смартфон2"},
+                new Smartphone { SmartphoneId = 3, Name = "Смартфон3"},
+                new Smartphone { SmartphoneId = 4, Name = "Смартфон4"},
+                new Smartphone { SmartphoneId = 5, Name = "Смартфон5"}
+            });
+
+            // Организация - создание контроллера
+            AdminController controller = new AdminController(mock.Object);
+
+            // Действие - удаление игры
+            controller.Delete(smartphone.SmartphoneId);
+
+            // Утверждение - проверка того, что метод удаления в хранилище
+            // вызывается для корректного объекта Smartphone
+            mock.Verify(m => m.DeleteSmartphone(smartphone.SmartphoneId));
+        }
     }
 }

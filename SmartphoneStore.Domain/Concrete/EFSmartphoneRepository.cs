@@ -28,5 +28,16 @@ namespace SmartphoneStore.Domain.Concrete
             }
             _context.SaveChanges();
         }
+
+        public Smartphone DeleteSmartphone(int smartphoneId)
+        { 
+            Smartphone dbEntry = _context.Smartphones.Find(smartphoneId);
+            if (dbEntry != null)
+            {
+                _context.Smartphones.Remove(dbEntry);
+                _context.SaveChanges();
+            }
+            return dbEntry;
+        }
     }
 }
