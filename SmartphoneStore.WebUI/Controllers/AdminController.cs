@@ -42,5 +42,22 @@ namespace SmartphoneStore.WebUI.Controllers
                 return View(smartphone);
             }
         }
+
+        public ViewResult Create()
+        {
+            return View("Edit", new Smartphone());
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int smartphoneId) 
+        {
+            Smartphone deletedSmartphone = repository.DeleteSmartphone(smartphoneId);
+            if (deletedSmartphone != null)
+            {
+                TempData["message"] = string.Format("Смартфон \"{0}\" был удален",
+                    deletedSmartphone.Name);
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -8,5 +8,7 @@ namespace SmartphoneStore.Domain.Abstract
         IEnumerable<Smartphone> Smartphones { get; }
 
         void SaveSmartphone(Smartphone smartphone);
+
+        Smartphone DeleteSmartphone(int smartphoneId);
     }
 }
