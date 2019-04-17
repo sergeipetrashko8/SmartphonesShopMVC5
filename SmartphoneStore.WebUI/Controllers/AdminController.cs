@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using SmartphoneStore.Domain.Abstract;
 using SmartphoneStore.Domain.Entities;
@@ -29,10 +30,16 @@ namespace SmartphoneStore.WebUI.Controllers
 
         // Перегруженная версия Edit() для сохранения изменений
         [HttpPost]
-        public ActionResult Edit(Smartphone smartphone)
+        public ActionResult Edit(Smartphone smartphone, HttpPostedFileBase image = null)
         {
             if (ModelState.IsValid)
             {
+                if (image != null)
+                {
+                    smartphone.ImageMimeType = image.ContentType;
+                    smartphone.ImageData = new byte[image.ContentLength];
+                    image.InputStream.Read(smartphone.ImageData, 0, image.ContentLength);
+                }
                 repository.SaveSmartphone(smartphone);
                 TempData["message"] = string.Format("Изменения в смартфоне \"{0}\" были сохранены", smartphone.Name);
                 return RedirectToAction("Index");

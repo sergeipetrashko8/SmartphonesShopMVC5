@@ -1,13 +1,14 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using SmartphoneStore.Domain.Abstract;
+using SmartphoneStore.Domain.Entities;
 using SmartphoneStore.WebUI.Models;
 
 namespace SmartphoneStore.WebUI.Controllers
 {
     public class SmartphoneController : Controller
     {
-        private ISmartphoneRepository _repository;
+        private readonly ISmartphoneRepository _repository;
         public int PageSize = 4;
 
         public SmartphoneController(ISmartphoneRepository repo)
@@ -35,6 +36,21 @@ namespace SmartphoneStore.WebUI.Controllers
                 CurrentManufacturer = manufacturer
             };
             return View(model);
+        }
+
+        public FileContentResult GetImage(int smartphoneId)
+        {
+            Smartphone smartphone = _repository.Smartphones
+                .FirstOrDefault(g => g.SmartphoneId == smartphoneId);
+
+            if (smartphone != null)
+            {
+                return File(smartphone.ImageData, smartphone.ImageMimeType);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
