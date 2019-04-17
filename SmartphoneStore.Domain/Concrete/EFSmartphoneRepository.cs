@@ -24,6 +24,8 @@ namespace SmartphoneStore.Domain.Concrete
                     dbEntry.Description = smartphone.Description;
                     dbEntry.Price = smartphone.Price;
                     dbEntry.Manufacturer = smartphone.Manufacturer;
+                    dbEntry.ImageData = smartphone.ImageData;
+                    dbEntry.ImageMimeType = smartphone.ImageMimeType;
                 }
             }
             _context.SaveChanges();
